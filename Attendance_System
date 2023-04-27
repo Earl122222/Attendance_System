@@ -1,0 +1,176 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
+package javaapplication8;
+
+import java.util.Scanner;
+public class JavaApplication8 {
+
+    public static void main(String[] args) {
+         Scanner scanner = new Scanner(System.in);
+        boolean[][] attendanceLog = new boolean[0][0];
+        boolean isAdminLoggedIn = false;
+        boolean isRunning = true;   
+        String date="";
+        
+        // Student names
+        String[] students = {"  John Reyes            | 0220126", "  Jane Velez            | 0220127", "  Mark Salonga          | 0220128", "  Mary Ann Velasco      | 0220129", "  Peter John Cruz       | 0220027", "  John Lloyd Morden     | 0220761", "  Robert Magada         | 0224525", "  Marlou Japos          | 0227825", "  Joemar Ayuban         | 0220189" , "  Anthony Magante       | 0220190"};
+           // display the names of students
+        
+       
+            
+        while (!isAdminLoggedIn) {
+            // Prompt the user to enter the admin password
+            System.out.print("Enter the admin username: ");
+            String adminName = scanner.nextLine();
+             System.out.print("Enter the admin password: ");
+            String adminPassword = scanner.nextLine();
+            // Check if the password is correct
+            if (adminName.equals("admin") & adminPassword.equals("123")) {
+                System.out.println("Logged in successfully as admin.");
+                System.out.println();
+                isAdminLoggedIn = true;
+            } else {
+                System.out.println("Incorrect password. Please try again.");
+                System.out.println();
+            }
+        }
+
+        while (isRunning) {
+            // Prompt the user to show or check attendance
+            System.out.println("       -WELCOME-");
+            System.out.println("1. Show Attendance Log");
+            System.out.println("2. Check Attendance for Today");
+            System.out.println("3. Show Students Names");
+            System.out.println("4. Exit");
+            System.out.println();
+            System.out.print("Enter your choice: ");
+            int option = scanner.nextInt();
+    
+            
+            
+              // display each name in the list
+      
+
+            switch (option) {
+            case 1: {
+        // Show attendance log
+            showAttendanceLog(students, attendanceLog, date);
+            break;
+    }
+            case 2: {
+        // Check attendance for today
+            attendanceLog = checkAttendance(students, attendanceLog);
+
+            break;
+    }
+            case 3: {
+        // Show names
+            showNames(students, attendanceLog);
+            break;
+    }
+            case 4: {
+        // Exit the program 
+            isRunning = false;
+            break;
+    }
+    default: {
+        System.out.println("Invalid option. Please choose again.");
+        break;
+    }}
+    
+        System.out.println("Thank you for using the Attendance System!");
+    }
+}
+
+  
+  
+     public static boolean[][] checkAttendance(String[] students, boolean[][] attendanceLog) {
+    // method code
+    
+    Scanner scanner = new Scanner(System.in);
+    // Initialize the attendance array for the day
+    String[] attendance = new String[students.length];
+  
+    // Take attendance for the day
+    System.out.print("Enter date: ");
+    String date = scanner.nextLine();
+    
+    System.out.println("Enter attendance for the day [1=PRESENT]   [2=ABSENT] ):");
+    System.out.println();
+    for (int i = 0; i < students.length; i++) {
+        System.out.print("Is " + students[i] + " present today? ");
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("1")) {
+            attendance[i] = "1";
+        } else {
+            attendance[i] = "2";
+        }
+    }
+
+    // Add the attendance for the day to the attendance log
+    boolean[][] newAttendanceLog = new boolean[attendanceLog.length + 1][students.length];
+    for (int i = 0; i < attendanceLog.length; i++) {
+        for (int j = 0; j < students.length; j++) {
+            newAttendanceLog[i][j] = attendanceLog[i][j];
+        }
+    }
+    for (int i = 0; i < students.length; i++) {
+        if (attendance[i].equalsIgnoreCase("1")) {
+            newAttendanceLog[attendanceLog.length][i] = true;
+        } else {
+            newAttendanceLog[attendanceLog.length][i] = false;
+        }
+    }
+
+    System.out.println("Attendance recorded for the day.");
+    showAttendanceLog(students, newAttendanceLog, date);
+
+    return newAttendanceLog;
+}
+      public static void showAttendanceLog(String[] students, boolean[][] attendanceLog, String date) {
+       
+      
+    if (attendanceLog.length == 0) {
+        System.out.println("");
+        System.out.println("Attendance log is empty.");
+        System.out.println();
+        return;
+    }
+
+    System.out.println("Attendance Log:");
+
+    
+    for (int i = 0; i < attendanceLog.length; i++) {
+        System.out.println("Date: "+date );
+        System.out.println("Day " + (i+1) + ":");
+        for (int j = 0; j < attendanceLog[i].length; j++) {
+            String status = attendanceLog[i][j] ? "present" : "absent";
+            System.out.println(students[j] + ": " + status);
+            
+        }}}
+
+     //DisplayNames
+        public static void showNames(String[] students, boolean[][] attendanceLog) {
+        if (attendanceLog.length == 0) {
+             for (String name : students) {
+            
+            System.out.println();
+            System.out.println("  -STUDENT NAME-        | -ID NUMBER-      ");
+            System.out.println(name);
+            System.out.println();
+        }
+            return;
+        }
+
+        System.out.println("Attendance Log:");
+        for (int i = 0; i < attendanceLog.length; i++) {
+            System.out.println("Day " + (i+1) + ":");
+            for (int j = 0; j < attendanceLog[i].length; j++) {
+                System.out.println(students[j] + ": " + attendanceLog[i][j]);
+            }
+        }}
+        
+
+}
